@@ -139,7 +139,7 @@ class LetterAvatar
         }
 
         $canvas->text($this->nameInitials, 240, 240, function (Font $font) {
-            $font->file(__DIR__ . '/fonts/arial-bold.ttf');
+            $font->file(__DIR__ . '/fonts/SourceSansPro-Semibold.ttf');
             $font->size(220);
             $font->color($this->foregroundColor);
             $font->valign('middle');
@@ -242,15 +242,27 @@ class LetterAvatar
      */
     private function stringToColor(string $string): string
     {
-        // random color
-        $rgb = substr(dechex(crc32($string)), 0, 6);
-        // make it darker
-        $darker = 2;
-        list($R16, $G16, $B16) = str_split($rgb, 2);
-        $R = sprintf('%02X', floor(hexdec($R16) / $darker));
-        $G = sprintf('%02X', floor(hexdec($G16) / $darker));
-        $B = sprintf('%02X', floor(hexdec($B16) / $darker));
-        return '#' . $R . $G . $B;
+        $colors = [
+            '#1abc9c',
+            '#2ecc71',
+            '#3498db',
+            '#9b59b6',
+            '#34495e',
+            '#16a085',
+            '#27ae60',
+            '#2980b9',
+            '#8e44ad',
+            '#2c3e50',
+            '#f1c40f',
+            '#e67e22',
+            '#e74c3c',
+            '#f39c12',
+            '#d35400',
+            '#c0392b'
+        ];
+
+        $index = crc32($string) % (count($colors) - 1);
+        return $colors[$index];
     }
 
 }
