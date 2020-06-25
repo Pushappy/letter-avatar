@@ -70,6 +70,35 @@ class LetterAvatar
         $this->setSize($size);
     }
 
+ /**
+     * Generate a hash for the given settings combination. 
+     * 
+     * @param string $mimetype
+     * @param int $quality
+     * @return string
+     */
+    public function hashWithSettings($mimetype = self::MIME_TYPE_PNG, $quality = 90): string
+    {
+        $allowedMimeTypes = [
+            self::MIME_TYPE_PNG,
+            self::MIME_TYPE_JPEG,
+        ];
+
+        if(!in_array($mimetype, $allowedMimeTypes, true)) {
+            throw new InvalidArgumentException('Invalid mimetype');
+        }
+
+        return sha1(json_encode([
+            'mime' => $mimetype,
+            'quality' => $quality,
+            'shape' => $this->shape,
+            'foreground' => $this->foregroundColor,
+            'background_color' => $this->backgroundColor,
+            'content' => $this->getInitials($this->name),
+            'size' => $this->size
+        ]));
+    }
+
     /**
      * color in RGB format (example: #FFFFFF)
      * 
